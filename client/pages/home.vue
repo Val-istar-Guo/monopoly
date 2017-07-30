@@ -10,7 +10,9 @@
       <span class='player-money'>Money: {{ activePlayerMoney }}</span>
     </div>
 
-    <button class='dice' @click='dice'>置骰子</button>
+    <button class='dice-button' @click='dice'>置骰子</button>
+
+    <dice v-if='showDice' :num='diceNum'></dice>
   </div>
 </template>
 
@@ -59,6 +61,8 @@ export default {
       camera,
       renderer,
 
+      diceNum: 0,
+      showDice: false,
       activePlayerName: '未开始',
       activePlayerMoney: 0,
       diceResolve: null,
@@ -85,7 +89,7 @@ export default {
 
       const map = new ExampleMap();
       const game = new Game(1);
-      console.log(game.addEventListener);
+
       game.addEventListener('onNextPlayer', this.updateStateLine);
 
       const player1 = new ManualPlayer('GG', ManualPlayer.createRedModle());
@@ -106,6 +110,9 @@ export default {
         this.diceResolve = resolve;
       });
 
+      player1.addEventListener('showDice', this.showDiceNum);
+      player2.addEventListener('showDice', this.showDiceNum);
+
       game.start();
       this.scene.add(game.modle);
     },
@@ -124,6 +131,13 @@ export default {
     updateStateLine: function (player) {
       this.activePlayerName = player.name;
       this.activePlayerMoney = player.money;
+    },
+
+    showDiceNum: function (num) {
+      this.diceNum = num;
+      this.showDice = true;
+
+      setTimeout(() => this.showDice = false, 1000);
     }
   },
 
@@ -145,6 +159,12 @@ export default {
   display: block;
 }
 
+.dice {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
 .state-line {
   position: absolute;
   top: 0;
@@ -161,7 +181,7 @@ export default {
   background: rgba(255, 255, 255, 0.4);
 }
 
-.dice {
+.dice-button {
   position: absolute;
 
   bottom: 20px;
