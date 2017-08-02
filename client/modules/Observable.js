@@ -1,39 +1,48 @@
-export default class {
+class Observable {
   constructor() {
-    this.listeners = [];
+    this.observers = [];
   }
 
-  send(eventName, params) {
-    this.listeners
-      .filter(listener => listener.eventListenFor === eventName)
-      .map(listener => listener.handler)
-      .forEach(handler => handler(params));
+
+  addObserver(event, handler) {
+    this.obervers.push({ event, handler });
   }
 
-  addEventListener(eventName, handler) {
-    this.listeners.push({
-      handler,
-      eventListenFor: eventName,
-    });
-  }
-
-  removeListenersListenTo(eventName) {
-    this.listeners = this.listeners
-      .filter(listener => listener.eventListenFor !== eventName);
-  }
-
-  removeListenersHandlerIs(handler) {
+  removeObserver(handler) {
     this.listeners = this.listeners
       .filter(listener => listener.handler !== handler);
   }
 
-  removeEventLister(arg) {
-    if (typeof arg === 'function') {
-      const targetHandler = arg;
-      removeListenersHandlerIs(targetHandler);
-    } else if (typeof arg === 'string') {
-      const EventName = arg;
-      removeListenersListenTo(EventName);
+  removeObserversOfEvent(event) {
+    this.observers = this.obervers
+      .filter(observers => observers.event !== event);
+  }
+
+  removeObserverOfEvent(event, handler) {
+    this.observers = this.obervers
+      .filter(observer => observer.event !== event || observer.handler !== handler);
+  }
+
+  emit(eventName, params) {
+    this.observers
+      .filter(observer => observer.event=== event)
+      .map(observer => observer.handler)
+      .forEach(handler => handler(params));
+  }
+
+  on(event, handler) {
+    this.addObserver(event, handler);
+  }
+
+  off(...arg) {
+    if (typeof arg[0] === 'function') {
+      this.removeObserver(...arg);
+    } else if (typeof arg[0] === 'string' && arg[1] === undefined) {
+      this.removeObserversOfEvent(...arg);
+    } else if (typeof arg[0] === 'string' && typeof arg[1] === 'function') {
+      this.removeObserverOfEvent(...arg);
+    } else {
+      throw new TypeError(`Expect argument: (function/eventName[, function]), but get (${arg.join(', ')})`);
     }
   }
 }

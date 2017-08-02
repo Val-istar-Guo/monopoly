@@ -58,7 +58,7 @@ export default class extends Observable {
 
   async nextRound() {
     this.roundNum++;
-    this.send('onNextRound', this.roundNum);
+    this.emit('onNextRound', this.roundNum);
 
 
     const players = this.players;
@@ -66,7 +66,7 @@ export default class extends Observable {
     players.forEach(player => ++player.energy);
 
     for (let player of players) {
-      this.send('onNextPlayer', player);
+      this.emit('onNextPlayer', player);
       await player.turn();
     }
 
@@ -91,7 +91,7 @@ export default class extends Observable {
   }
 
   end() {
-    this.send('end');
+    this.emit('end');
   }
 }
 

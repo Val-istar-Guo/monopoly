@@ -90,7 +90,7 @@ export default {
       const map = new ExampleMap();
       const game = new Game(1);
 
-      game.addEventListener('onNextPlayer', this.updateStateLine);
+      game.on('onNextPlayer', this.updateStateLine);
 
       const player1 = new ManualPlayer('GG', ManualPlayer.createRedModle());
       const player2 = new ManualPlayer('DC', ManualPlayer.createGreenModle());
@@ -98,20 +98,20 @@ export default {
       game.addPlayer(player1);
       game.addPlayer(player2);
 
-      player1.addEventListener('createDiceButton', (resolve) => {
+      player1.on('createDiceButton', (resolve) => {
         console.log('GG Dice');
 
         this.diceResolve = resolve;
       });
 
-      player2.addEventListener('createDiceButton', (resolve) => {
+      player2.on('createDiceButton', (resolve) => {
         console.log('DC Dice');
 
         this.diceResolve = resolve;
       });
 
-      player1.addEventListener('showDice', this.showDiceNum);
-      player2.addEventListener('showDice', this.showDiceNum);
+      player1.on('showDice', this.showDiceNum);
+      player2.on('showDice', this.showDiceNum);
 
       game.start();
       this.scene.add(game.modle);
