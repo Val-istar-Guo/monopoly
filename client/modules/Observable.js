@@ -1,29 +1,29 @@
-class Observable {
+export default class Observable {
   constructor() {
     this.observers = [];
   }
 
 
   addObserver(event, handler) {
-    this.obervers.push({ event, handler });
+    this.observers.push({ event, handler });
   }
 
   removeObserver(handler) {
-    this.listeners = this.listeners
-      .filter(listener => listener.handler !== handler);
+    this.observers = this.observers
+      .filter(observer => observer.handler !== handler);
   }
 
   removeObserversOfEvent(event) {
-    this.observers = this.obervers
-      .filter(observers => observers.event !== event);
+    this.observers = this.observers
+      .filter(observer => observer.event !== event);
   }
 
   removeObserverOfEvent(event, handler) {
-    this.observers = this.obervers
+    this.observers = this.observers
       .filter(observer => observer.event !== event || observer.handler !== handler);
   }
 
-  emit(eventName, params) {
+  emit(event, params) {
     this.observers
       .filter(observer => observer.event=== event)
       .map(observer => observer.handler)
