@@ -11,7 +11,7 @@ export default class extends Land {
     });
 
     this.type = 'DelayLand';
-    this.delayRound = config.delayRound;
+    this.delayRound = config.delay;
   }
 
   onArrive(player) {
